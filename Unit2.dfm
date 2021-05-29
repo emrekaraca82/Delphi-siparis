@@ -1,0 +1,191 @@
+object FrmUrun: TFrmUrun
+  Left = 0
+  Top = 0
+  Caption = 'Urun'
+  ClientHeight = 367
+  ClientWidth = 763
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 763
+    Height = 326
+    Align = alClient
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 16
+      Top = 19
+      Width = 41
+      Height = 13
+      Caption = 'Urun Adi'
+    end
+    object Label2: TLabel
+      Left = 16
+      Top = 59
+      Width = 50
+      Height = 13
+      Caption = 'Urun Kodu'
+    end
+    object Label3: TLabel
+      Left = 16
+      Top = 102
+      Width = 24
+      Height = 13
+      Caption = 'Fiyat'
+    end
+    object Label4: TLabel
+      Left = 16
+      Top = 136
+      Width = 57
+      Height = 13
+      Caption = 'Urun Miktar'#305
+    end
+    object DBEdit1: TDBEdit
+      Left = 96
+      Top = 16
+      Width = 121
+      Height = 21
+      DataField = 'urun_adi'
+      DataSource = DataSource1
+      TabOrder = 0
+    end
+    object DBEdit2: TDBEdit
+      Left = 96
+      Top = 56
+      Width = 121
+      Height = 21
+      DataField = 'urun_kodu'
+      DataSource = DataSource1
+      TabOrder = 1
+    end
+    object DBEdit3: TDBEdit
+      Left = 96
+      Top = 99
+      Width = 121
+      Height = 21
+      DataField = 'urun_fiyat'
+      DataSource = DataSource1
+      TabOrder = 2
+    end
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 205
+      Width = 761
+      Height = 120
+      Align = alBottom
+      DataSource = DataSource1
+      TabOrder = 3
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+    end
+    object DBEdit4: TDBEdit
+      Left = 96
+      Top = 133
+      Width = 121
+      Height = 21
+      DataField = 'urun_miktar'
+      DataSource = DataSource1
+      TabOrder = 4
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 326
+    Width = 763
+    Height = 41
+    Align = alBottom
+    TabOrder = 1
+    object BitBtn1: TBitBtn
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = 'Kay'#305't Et'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtn1Click
+    end
+    object BitBtn2: TBitBtn
+      AlignWithMargins = True
+      Left = 684
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alRight
+      Cancel = True
+      Caption = 'Kapat'
+      DoubleBuffered = True
+      Glyph.Data = {
+        DE010000424DDE01000000000000760000002800000024000000120000000100
+        0400000000006801000000000000000000001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        333333333333333333333333000033338833333333333333333F333333333333
+        0000333911833333983333333388F333333F3333000033391118333911833333
+        38F38F333F88F33300003339111183911118333338F338F3F8338F3300003333
+        911118111118333338F3338F833338F3000033333911111111833333338F3338
+        3333F8330000333333911111183333333338F333333F83330000333333311111
+        8333333333338F3333383333000033333339111183333333333338F333833333
+        00003333339111118333333333333833338F3333000033333911181118333333
+        33338333338F333300003333911183911183333333383338F338F33300003333
+        9118333911183333338F33838F338F33000033333913333391113333338FF833
+        38F338F300003333333333333919333333388333338FFF830000333333333333
+        3333333333333333333888330000333333333333333333333333333333333333
+        0000}
+      ModalResult = 2
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtn2Click
+    end
+  end
+  object ADOTable1: TADOTable
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    TableName = 'urun'
+    Left = 688
+    Top = 16
+  end
+  object DataSource1: TDataSource
+    DataSet = ADOTable1
+    Left = 688
+    Top = 80
+  end
+  object ADOQuery1: TADOQuery
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select*from urun')
+    Left = 688
+    Top = 136
+    object ADOQuery1name: TWideStringField
+      FieldName = 'name'
+      Size = 50
+    end
+    object ADOQuery1marka: TWideStringField
+      FieldName = 'marka'
+      Size = 50
+    end
+    object ADOQuery1fiyat: TBCDField
+      FieldName = 'fiyat'
+      Precision = 18
+      Size = 2
+    end
+  end
+end

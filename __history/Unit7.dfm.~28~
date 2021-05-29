@@ -1,0 +1,133 @@
+object FrmSiparisMaster: TFrmSiparisMaster
+  Left = 0
+  Top = 0
+  Caption = 'Siparis Listele'
+  ClientHeight = 386
+  ClientWidth = 775
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TPanel
+    Left = 0
+    Top = 345
+    Width = 775
+    Height = 41
+    Align = alBottom
+    TabOrder = 0
+    object BitBtn1: TBitBtn
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = 'Ekle'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 0
+    end
+    object BitBtn2: TBitBtn
+      AlignWithMargins = True
+      Left = 696
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alRight
+      Caption = 'Kapat'
+      DoubleBuffered = True
+      Kind = bkCancel
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtn2Click
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 775
+    Height = 345
+    Align = alClient
+    TabOrder = 1
+    ExplicitTop = -2
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 176
+      Width = 773
+      Height = 168
+      Align = alBottom
+      DataSource = DataSource1
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+    end
+    object BtnTarihAra: TButton
+      Left = 624
+      Top = 24
+      Width = 75
+      Height = 25
+      Caption = 'Ara'
+      TabOrder = 1
+      OnClick = BtnTarihAraClick
+    end
+    object DTP3: TDateTimePicker
+      Left = 496
+      Top = 24
+      Width = 97
+      Height = 21
+      Date = 44306.416198645830000000
+      Time = 44306.416198645830000000
+      TabOrder = 2
+    end
+    object DTP2: TDateTimePicker
+      Left = 352
+      Top = 24
+      Width = 97
+      Height = 21
+      Date = 44306.416198645830000000
+      Time = 44306.416198645830000000
+      TabOrder = 3
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = ADOQueryTarih
+    Left = 704
+    Top = 112
+  end
+  object ADOQueryTarih: TADOQuery
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    Parameters = <
+      item
+        Name = 't1'
+        Attributes = [paNullable]
+        DataType = ftDateTime
+        NumericScale = 3
+        Precision = 23
+        Size = 16
+        Value = Null
+      end
+      item
+        Name = 't2'
+        Attributes = [paNullable]
+        DataType = ftDateTime
+        NumericScale = 3
+        Precision = 23
+        Size = 16
+        Value = Null
+      end>
+    SQL.Strings = (
+      'Select * from siparis_master'
+      'WHERE sip_tarih between :t1 and :t2')
+    Left = 624
+    Top = 112
+  end
+end

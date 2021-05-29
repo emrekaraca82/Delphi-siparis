@@ -1,0 +1,263 @@
+unit Unit5;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs,Unit3, ExtCtrls, DB, ADODB, StdCtrls, Mask, DBCtrls, dblookup, Buttons,
+  Grids, DBGrids, ComCtrls, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013White,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine, dxSkinVS2010,
+  dxSkinWhiteprint, dxSkinXmas2008Blue, dxSkinscxPCPainter, cxCustomData,
+  cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, cxDBData, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid;
+
+type
+  TFrmSiparisDetay = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DataSourceDetail: TDataSource;
+    btnSiparis: TBitBtn;
+    ADOUrunTable: TADOTable;
+    DataSourceUrun: TDataSource;
+    DBGrid1: TDBGrid;
+    ADOUrunTableurun_id: TAutoIncField;
+    ADOUrunTableurun_kodu: TWideStringField;
+    ADOUrunTableurun_adi: TWideStringField;
+    ADOUrunTableurun_fiyat: TBCDField;
+    ADOUrunTableurun_miktar: TIntegerField;
+    DataSourceMaster: TDataSource;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    DBEditSipNo: TDBEdit;
+    DTPSipTarih: TDateTimePicker;
+    DBEditTutar: TDBEdit;
+    btnEkle: TBitBtn;
+    ADOQMusteri: TADOQuery;
+    DataSourceMusteri: TDataSource;
+    ADOQMaster: TADOQuery;
+    ADOQDetail: TADOQuery;
+    ADOQMastersip_no: TIntegerField;
+    ADOQMastermus_adi: TWideStringField;
+    ADOQMastersip_tarih: TDateTimeField;
+    ADOQMastertoplam_tutar: TBCDField;
+    ADOQDetailurun_adi: TWideStringField;
+    ADOQDetailurun_kodu: TWideStringField;
+    ADOQDetailmiktar: TIntegerField;
+    ADOQDetailfiyat: TBCDField;
+    ADOQDetailiskonto_oran: TFloatField;
+    ADOQDetailiskonto_tutar: TBCDField;
+    ADOQDetailtoplam_tutar: TBCDField;
+    ADOQMusteriid: TAutoIncField;
+    ADOQMusteriadisoyadi: TWideStringField;
+    ADOQMusteriadres: TWideStringField;
+    ADOQMusteritelefon: TWideStringField;
+    EditIskonto: TEdit;
+    btnIskonto: TButton;
+    DBEditMusteriAdi: TDBEdit;
+    Label5: TLabel;
+    DBEditSipId: TDBEdit;
+    ADOQDetailid: TIntegerField;
+    ADOQDetailsira_no: TIntegerField;
+    ADOQMastersip_id: TIntegerField;
+    ADOQMastermus_id: TIntegerField;
+    btnMusteri: TButton;
+    btnKapat: TBitBtn;
+    btnIptal: TButton;
+    btnDuzenle: TButton;
+    procedure btnSiparisClick(Sender: TObject);
+    procedure btnEkleClick(Sender: TObject);
+    procedure btnIskontoClick(Sender: TObject);
+    procedure ADOQDetailiskonto_oranValidate(Sender: TField);
+    procedure ADOQDetailBeforeInsert(DataSet: TDataSet);
+    procedure ADOQDetailAfterInsert(DataSet: TDataSet);
+    procedure btnMusteriClick(Sender: TObject);
+    procedure ADOQMasterAfterInsert(DataSet: TDataSet);
+    procedure btnKapatClick(Sender: TObject);
+    procedure btnIptalClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnDuzenleClick(Sender: TObject);
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    LastSiraNo:Integer;
+    procedure iskontohesapla;
+    //procedure butonayarla;
+  end;
+
+   type
+    TypeStok=record
+    urun_id:Integer;
+    urun_kodu:string;
+    urun_adi:string;
+    urun_miktar:Integer;
+	  urun_fiyat:Double;
+  end;
+
+  type
+    TypeMusteri=record
+    mus_id:Integer;
+    mus_adi:string;
+  end;
+
+var
+  FrmSiparisDetay: TFrmSiparisDetay;
+ procedure CreateSiparisDetailForm(sip_id:integer);
+
+implementation
+  uses unit6,unit1, global;
+{$R *.dfm}
+
+{
+procedure TFrmSiparisDetay.butonayarla;
+var
+  edit:boolean;
+begin
+  edit:=ADOQDetail.State in [dsEdit,dsInsert];
+  btnEkle.Enabled:=not(edit);
+  btnSiparis.Enabled:=edit;
+  btnMusteri.Enabled:=not(edit);
+  btnIskonto.Enabled:=not(edit);
+end;
+}
+
+procedure CreateSiparisDetailForm(sip_iid:integer);
+begin
+  with TFrmSiparisDetay.Create(Application) do
+  begin
+    caption:=name;
+    ADOQMaster.Parameters.ParamByName('sip_id').Value :=sip_iid;
+    ADOQMaster.open;
+    if sip_iid=0 then
+      ADOQMaster.Insert;
+    ADOQDetail.open;
+    show;
+  end;
+end;
+
+procedure TFrmSiparisDetay.iskontohesapla;
+begin
+  AdoQDetailtoplam_tutar.Value:=AdoQDetailmiktar.Value*AdoQDetailfiyat.Value;
+  AdoQDetailiskonto_tutar.Value:=AdoQDetailtoplam_tutar.Value*(AdoQDetailiskonto_oran.Value/100);
+end;
+
+procedure TFrmSiparisDetay.ADOQDetailAfterInsert(DataSet: TDataSet);
+begin
+  //butonayarla;
+  AdoQDetailid.Value:=AdoQMastersip_id.Value;
+  ADOQDetailsira_no.value:=LastSiraNo+1;
+end;
+
+procedure TFrmSiparisDetay.ADOQDetailBeforeInsert(DataSet: TDataSet);
+begin
+	AdoQDetail.Last;
+  LastSiraNo:=ADOQDetailsira_no.Value;
+end;
+
+procedure TFrmSiparisDetay.ADOQDetailiskonto_oranValidate(Sender: TField);
+begin
+  iskontohesapla;
+end;
+
+procedure TFrmSiparisDetay.ADOQMasterAfterInsert(DataSet: TDataSet);
+begin
+   AdoQMastersip_id.value:=getnewid('siparis_master','sip_id');
+end;
+
+procedure TFrmSiparisDetay.btnSiparisClick(Sender: TObject);
+begin
+  if ADOQDetail.State in [dsEdit,dsInsert] then
+      ADOQDetail.Post;
+  if AdoQMaster.State in [dsEdit,dsInsert] then
+      AdoQMastersip_Tarih.Value:=DTPSipTarih.Date;
+      AdoQMaster.Post;
+
+  showmessage('Kayýt Eklenmistir');
+end;
+
+
+procedure TFrmSiparisDetay.FormShow(Sender: TObject);
+begin
+  btnEkle.Enabled:=false;
+  btnSiparis.Enabled:=false;
+  btnMusteri.Enabled:=false;
+  btnDuzenle.Enabled:=false;
+end;
+
+procedure TFrmSiparisDetay.btnDuzenleClick(Sender: TObject);
+begin
+ADOQDetail.Edit;
+ADOQMaster.Edit;
+end;
+
+procedure TFrmSiparisDetay.btnEkleClick(Sender: TObject);
+var
+  sec:TypeStok;
+begin
+  sec:=CreateUrunForm(1);
+  if sec.urun_id>0 then
+  begin
+    ADOQDetail.Insert;
+    //ADOQDetailurun_id.Value:=sec.urun_id;
+    ADOQDetailurun_adi.Value:=sec.urun_adi;
+    ADOQDetailurun_kodu.Value:=sec.urun_kodu;
+    ADOQDetailmiktar.Value:=sec.urun_miktar;
+    ADOQDetailfiyat.Value:=sec.urun_fiyat;
+    iskontohesapla;
+  end;
+end;
+
+
+procedure TFrmSiparisDetay.btnMusteriClick(Sender: TObject);
+var
+  sec:TypeMusteri;
+begin
+  sec:=BrMusteriCreate(1);
+  if sec.mus_id>0 then
+  begin
+     ADOQMasterMus_adi.Value:=sec.mus_adi;
+  end;
+
+end;
+
+procedure TFrmSiparisDetay.btnIptalClick(Sender: TObject);
+begin
+btnSiparis.Enabled:=true;
+btnEkle.Enabled:=true;
+btnMusteri.Enabled:=true;
+btnDuzenle.Enabled:=true;
+end;
+
+procedure TFrmSiparisDetay.btnIskontoClick(Sender: TObject);
+begin
+  AdoQDetail.first;
+  while not AdoQDetail.Eof do
+  begin
+    AdoQDetail.Edit;
+    AdoQDetailiskonto_oran.value:=strtoint(EditIskonto.Text);
+    AdoQDetail.Post;
+    AdoQDetail.Next;
+  end;
+end;
+
+procedure TFrmSiparisDetay.btnKapatClick(Sender: TObject);
+begin
+  if Application.MessageBox('Çýkmak istiyor musunuz','Uyarý',MB_YesNoCancel+32)=IdYes then close;
+end;
+
+end.

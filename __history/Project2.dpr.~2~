@@ -1,0 +1,16 @@
+program Project2;
+
+uses
+  Forms,
+  Unit3 in 'Unit3.pas' {FrmGiris},
+  Unit1 in 'Unit1.pas' {frmMusteri};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmGiris, FrmGiris);
+  Application.CreateForm(TfrmMusteri, frmMusteri);
+  Application.Run;
+end.

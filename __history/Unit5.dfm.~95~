@@ -1,0 +1,439 @@
+object FrmSiparisDetay: TFrmSiparisDetay
+  Left = 0
+  Top = 0
+  Caption = 'Siparis Detay'
+  ClientHeight = 394
+  ClientWidth = 777
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 777
+    Height = 353
+    Align = alClient
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 25
+      Top = 53
+      Width = 47
+      Height = 13
+      Caption = 'Siparis No'
+    end
+    object Label2: TLabel
+      Left = 25
+      Top = 88
+      Width = 58
+      Height = 13
+      Caption = 'Siparis Tarih'
+    end
+    object Label3: TLabel
+      Left = 25
+      Top = 122
+      Width = 53
+      Height = 13
+      Caption = 'M'#252'steri Ad'#305
+    end
+    object Label4: TLabel
+      Left = 25
+      Top = 157
+      Width = 63
+      Height = 13
+      Caption = 'Toplam Tutar'
+    end
+    object Label5: TLabel
+      Left = 25
+      Top = 19
+      Width = 44
+      Height = 13
+      Caption = 'Siparis Id'
+    end
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 192
+      Width = 775
+      Height = 160
+      Align = alBottom
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      DataSource = DataSourceDetail
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'id'
+          Width = 46
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'sira_no'
+          Width = 44
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'urun_adi'
+          Width = 204
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'urun_kodu'
+          Width = 116
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'miktar'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'fiyat'
+          Width = 81
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'iskonto_oran'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'iskonto_tutar'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'toplam_tutar'
+          Visible = True
+        end>
+    end
+    object DBEditSipNo: TDBEdit
+      Left = 95
+      Top = 50
+      Width = 226
+      Height = 21
+      DataField = 'sip_no'
+      DataSource = DataSourceMaster
+      TabOrder = 1
+    end
+    object DTPSipTarih: TDateTimePicker
+      Left = 95
+      Top = 85
+      Width = 226
+      Height = 21
+      Date = 44308.618276817130000000
+      Time = 44308.618276817130000000
+      DateFormat = dfLong
+      TabOrder = 2
+    end
+    object DBEditTutar: TDBEdit
+      Left = 95
+      Top = 154
+      Width = 226
+      Height = 21
+      DataField = 'toplam_tutar'
+      DataSource = DataSourceMaster
+      TabOrder = 3
+    end
+    object EditIskonto: TEdit
+      Left = 530
+      Top = 154
+      Width = 121
+      Height = 21
+      TabOrder = 4
+      Text = '10'
+    end
+    object btnIskonto: TButton
+      Left = 672
+      Top = 152
+      Width = 81
+      Height = 25
+      Caption = 'Iskonto Uygula'
+      TabOrder = 5
+      OnClick = btnIskontoClick
+    end
+    object DBEditMusteriAdi: TDBEdit
+      Left = 95
+      Top = 119
+      Width = 226
+      Height = 21
+      DataField = 'mus_adi'
+      DataSource = DataSourceMaster
+      TabOrder = 6
+    end
+    object DBEditSipId: TDBEdit
+      Left = 95
+      Top = 16
+      Width = 226
+      Height = 21
+      DataField = 'sip_id'
+      DataSource = DataSourceMaster
+      TabOrder = 7
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 353
+    Width = 777
+    Height = 41
+    Align = alBottom
+    TabOrder = 1
+    object btnSiparis: TBitBtn
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 85
+      Height = 33
+      Align = alLeft
+      Caption = 'Siparis Kay'#305't Et'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = btnSiparisClick
+    end
+    object btnEkle: TBitBtn
+      AlignWithMargins = True
+      Left = 95
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = #220'r'#252'n Ekle'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = btnEkleClick
+    end
+    object btnMusteri: TButton
+      AlignWithMargins = True
+      Left = 176
+      Top = 4
+      Width = 97
+      Height = 33
+      Align = alLeft
+      Caption = 'M'#252#351'teri Listesi'
+      TabOrder = 2
+      OnClick = btnMusteriClick
+    end
+    object btnKapat: TBitBtn
+      AlignWithMargins = True
+      Left = 698
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alRight
+      Caption = 'Kapat'
+      DoubleBuffered = True
+      Kind = bkCancel
+      ParentDoubleBuffered = False
+      TabOrder = 3
+      OnClick = btnKapatClick
+    end
+    object btnIptal: TButton
+      AlignWithMargins = True
+      Left = 360
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = #304'ptal'
+      TabOrder = 4
+      OnClick = btnIptalClick
+    end
+    object btnDuzenle: TButton
+      AlignWithMargins = True
+      Left = 279
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = 'D'#252'zenle'
+      TabOrder = 5
+      OnClick = btnDuzenleClick
+    end
+  end
+  object DataSourceDetail: TDataSource
+    DataSet = ADOQDetail
+    Left = 664
+    Top = 88
+  end
+  object ADOUrunTable: TADOTable
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    TableName = 'urun'
+    Left = 712
+    Top = 280
+    object ADOUrunTableurun_id: TAutoIncField
+      FieldName = 'urun_id'
+      ReadOnly = True
+    end
+    object ADOUrunTableurun_kodu: TWideStringField
+      FieldName = 'urun_kodu'
+      Size = 50
+    end
+    object ADOUrunTableurun_adi: TWideStringField
+      FieldName = 'urun_adi'
+      Size = 50
+    end
+    object ADOUrunTableurun_fiyat: TBCDField
+      FieldName = 'urun_fiyat'
+      Precision = 18
+      Size = 2
+    end
+    object ADOUrunTableurun_miktar: TIntegerField
+      FieldName = 'urun_miktar'
+    end
+  end
+  object DataSourceUrun: TDataSource
+    DataSet = ADOUrunTable
+    Left = 624
+    Top = 280
+  end
+  object DataSourceMaster: TDataSource
+    DataSet = ADOQMaster
+    Left = 568
+    Top = 88
+  end
+  object ADOQMusteri: TADOQuery
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select*from musteri')
+    Left = 456
+    Top = 24
+    object ADOQMusteriid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object ADOQMusteriadisoyadi: TWideStringField
+      FieldName = 'adisoyadi'
+      Size = 50
+    end
+    object ADOQMusteriadres: TWideStringField
+      FieldName = 'adres'
+      Size = 150
+    end
+    object ADOQMusteritelefon: TWideStringField
+      FieldName = 'telefon'
+      Size = 11
+    end
+  end
+  object DataSourceMusteri: TDataSource
+    DataSet = ADOQMusteri
+    Left = 456
+    Top = 88
+  end
+  object ADOQMaster: TADOQuery
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    AfterInsert = ADOQMasterAfterInsert
+    Parameters = <
+      item
+        Name = 'sip_id'
+        Attributes = [paSigned, paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Size = 4
+        Value = Null
+      end>
+    SQL.Strings = (
+      'select*from siparis_master'
+      'where sip_id=:sip_id')
+    Left = 568
+    Top = 24
+    object ADOQMastersip_no: TIntegerField
+      FieldName = 'sip_no'
+    end
+    object ADOQMastermus_adi: TWideStringField
+      FieldName = 'mus_adi'
+      Size = 50
+    end
+    object ADOQMastersip_tarih: TDateTimeField
+      FieldName = 'sip_tarih'
+    end
+    object ADOQMastertoplam_tutar: TBCDField
+      FieldName = 'toplam_tutar'
+      Precision = 18
+      Size = 2
+    end
+    object ADOQMastersip_id: TIntegerField
+      FieldName = 'sip_id'
+    end
+    object ADOQMastermus_id: TIntegerField
+      FieldName = 'mus_id'
+    end
+  end
+  object ADOQDetail: TADOQuery
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    BeforeInsert = ADOQDetailBeforeInsert
+    AfterInsert = ADOQDetailAfterInsert
+    DataSource = DataSourceMaster
+    Parameters = <
+      item
+        Name = 'sip_iid'
+        Attributes = [paSigned, paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Size = 4
+        Value = Null
+      end>
+    SQL.Strings = (
+      'select * from siparis_detay'
+      'where id=:sip_iid')
+    Left = 664
+    Top = 24
+    object ADOQDetailid: TIntegerField
+      FieldName = 'id'
+    end
+    object ADOQDetailsira_no: TIntegerField
+      FieldName = 'sira_no'
+    end
+    object ADOQDetailurun_adi: TWideStringField
+      FieldName = 'urun_adi'
+      Size = 50
+    end
+    object ADOQDetailurun_kodu: TWideStringField
+      FieldName = 'urun_kodu'
+      Size = 50
+    end
+    object ADOQDetailmiktar: TIntegerField
+      FieldName = 'miktar'
+    end
+    object ADOQDetailfiyat: TBCDField
+      FieldName = 'fiyat'
+      Precision = 18
+      Size = 2
+    end
+    object ADOQDetailiskonto_oran: TFloatField
+      FieldName = 'iskonto_oran'
+      OnValidate = ADOQDetailiskonto_oranValidate
+    end
+    object ADOQDetailiskonto_tutar: TBCDField
+      FieldName = 'iskonto_tutar'
+      Precision = 18
+      Size = 2
+    end
+    object ADOQDetailtoplam_tutar: TBCDField
+      FieldName = 'toplam_tutar'
+      Precision = 18
+      Size = 2
+    end
+  end
+end

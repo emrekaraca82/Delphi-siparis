@@ -1,0 +1,224 @@
+unit Unit6;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls,Unit3,Forms,
+  Dialogs, StdCtrls, Mask, DBCtrls, Grids, DBGrids, DB, ADODB, Buttons,ExtCtrls,
+  ActnList,unit5,Comobj;
+
+type
+  TFrmUrun = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    btnKapat: TBitBtn;
+    ADOUrunTable: TADOTable;
+    DataSourceUrun: TDataSource;
+    DBEdit1: TDBEdit;
+    Label1: TLabel;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    DBEdit4: TDBEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    ADOUrunTableurun_id: TAutoIncField;
+    ADOUrunTableurun_kodu: TWideStringField;
+    ADOUrunTableurun_adi: TWideStringField;
+    ADOUrunTableurun_fiyat: TBCDField;
+    ADOUrunTableurun_miktar: TIntegerField;
+    SpeedButton1: TSpeedButton;
+    btnEkle: TButton;
+    Panel3: TPanel;
+    DBGrid1: TDBGrid;
+    ADOUrunTableins_user: TStringField;
+    ADOUrunTableins_date: TDateTimeField;
+    ADOUrunTableupd_user: TStringField;
+    ADOUrunTableupd_date: TDateTimeField;
+    btnSec: TBitBtn;
+    btnKayit: TBitBtn;
+    btnSil: TBitBtn;
+    btnIptal: TButton;
+    btnExcelAktar: TButton;
+    procedure FormShow(Sender: TObject);
+    procedure btnKapatClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure btnsilClick(Sender: TObject);
+    procedure btnEkleClick(Sender: TObject);
+    procedure ADOUrunTableAfterInsert(DataSet: TDataSet);
+    procedure ADOUrunTableBeforePost(DataSet: TDataSet);
+    procedure btnsecClick(Sender: TObject);
+    procedure btnKayitClick(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure btnIptalClick(Sender: TObject);
+    procedure btnExcelAktarClick(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure butonayarla;
+  end;
+
+  var
+   FrmUrun: TFrmUrun;
+   SEC2:TypeStok;
+
+   function CreateUrunForm(TagModu:Longint): TypeStok;
+
+implementation
+  uses global;
+{$R *.dfm}
+
+procedure TFrmUrun.butonayarla;
+var
+  edit:boolean;
+begin
+  edit:=AdoUrunTable.State in [dsEdit,dsInsert];
+  btnEkle.Enabled:=not(edit);
+  btnKayit.Enabled:=edit;
+  btnSil.Enabled:=not(edit);
+  btnSec.Enabled:=not(edit);
+end;
+
+procedure TFrmUrun.btnExcelAktarClick(Sender: TObject);
+//Excele Yolla
+var
+  i,a:Integer;
+  uygulama:Variant;
+begin
+
+   uygulama:=CreateOleObject('Excel.Application');
+   uygulama.visible:=true;
+   uygulama.WorkBooks.Add;
+   uygulama.ActiveSheet.Cells[1,1]:='Urun Kodu';
+   uygulama.ActiveSheet.cells[1,2]:='Urun Adý';
+   uygulama.ActiveSheet.Cells[1,3]:='Urun Miktar';
+   uygulama.ActiveSheet.cells[1,4]:='Urun Fiyat';
+
+   for i:=1 to DbGrid1.Columns.Count do
+   begin
+    uygulama.cells[1, i] := DbGrid1.Columns[i - 1].FieldName;
+   end;
+   for I := 2 to DbGrid1.DataSource.DataSet.RecordCount + 1 do
+  begin
+    for a := 0 to DbGrid1.Columns.Count - 1 do
+    begin
+      uygulama.cells[i, a + 1] := DbGrid1.DataSource.DataSet.Fields[a].AsString;
+    end;
+    DbGrid1.DataSource.DataSet.Next;
+  end;
+end;
+
+procedure TFrmUrun.btnsecClick(Sender: TObject);
+begin
+  sec2.urun_id:=ADOUrunTableurun_id.value;
+  sec2.urun_kodu:=ADOUrunTableurun_kodu.value;
+  sec2.urun_adi:=ADOUrunTableurun_adi.value;
+  sec2.urun_miktar:=ADOUrunTableurun_miktar.value;
+  sec2.urun_fiyat:=ADOUrunTableurun_fiyat.value;
+  modalresult:=mrOk;
+end;
+
+procedure TFrmUrun.btnsilClick(Sender: TObject);
+var
+  sonuc:typeSonuc;
+begin
+  sonuc:=deletequery('sp_UrunSil',ADOUrunTable.Fields[1].Value);
+  if sonuc.id=0 then
+  begin
+    ADOUrunTable.Close;
+    ADOUrunTable.Open;
+    MessageDlg(sonuc.text,mtError,[mbOk],0);
+  end
+  else
+    MessageDlg('Kayýt silindi',mtInformation,[mbOk],0);
+end;
+
+procedure TFrmUrun.btnEkleClick(Sender: TObject);
+begin
+  ADOUrunTable.Insert;
+  dbedit1.SetFocus;
+end;
+
+procedure TFrmUrun.btnIptalClick(Sender: TObject);
+begin
+  btnEkle.Enabled:=true;
+  btnKayit.Enabled:=true;
+  btnSil.Enabled:=true;
+  btnSec.Enabled:=true;
+end;
+
+function CreateUrunForm(TagModu:Longint): TypeStok;
+begin
+
+  Result.urun_id :=-1;
+  with TFrmUrun.Create(Application) do
+  begin
+    Tag:=TagModu;
+    if Tag=1 then btnSec.Visible:=True;
+    try
+      if tag<>0 then
+      begin
+        if ShowModal=mrOk then Result:=SEC2
+        else  Result.urun_id:=-1;
+      end
+      else
+        show;
+    finally
+      //Free;
+    end;
+  end;
+end;
+
+procedure TFrmUrun.ADOUrunTableAfterInsert(DataSet: TDataSet);
+begin
+  butonayarla;
+end;
+
+procedure TFrmUrun.ADOUrunTableBeforePost(DataSet: TDataSet);
+begin
+  setlog(DataSet);
+end;
+
+procedure TFrmUrun.btnKayitClick(Sender: TObject);
+begin
+  ADOUrunTable.Post;
+  MessageDlg('Kayýt Eklenmistir',mtInformation,[mbOk],0)
+end;
+
+procedure TFrmUrun.btnKapatClick(Sender: TObject);
+begin
+  if Application.MessageBox('Çýkmak istiyor musunuz','Uyarý',MB_YesNoCancel+32)=IdYes then close;
+end;
+
+procedure TFrmUrun.BitBtn3Click(Sender: TObject);
+var
+  sonuc:typeSonuc;
+begin
+  sonuc:=deletequery('sp_UrunSil',ADOUrunTable.Fields[1].Value);
+  if sonuc.id=0 then
+  begin
+    ADOUrunTable.Close;
+    ADOUrunTable.Open;
+    MessageDlg(sonuc.text,mtError,[mbOk],0);
+  end
+  else
+    MessageDlg('Kayýt silindi',mtInformation,[mbOk],0);
+end;
+
+procedure TFrmUrun.DBGrid1DblClick(Sender: TObject);
+begin
+  btnSecClick(btnSec);
+end;
+
+procedure TFrmUrun.FormShow(Sender: TObject);
+begin
+  ADOUrunTable.Open;
+  btnEkle.Enabled:=false;
+  btnKayit.Enabled:=false;
+  btnSil.Enabled:=false;
+  btnSec.Enabled:=false;
+end;
+
+end.

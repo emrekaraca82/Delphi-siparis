@@ -1,0 +1,222 @@
+object FrmSiparisMaster: TFrmSiparisMaster
+  Left = 0
+  Top = 0
+  Caption = 'Siparis Listele'
+  ClientHeight = 386
+  ClientWidth = 775
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TPanel
+    Left = 0
+    Top = 345
+    Width = 775
+    Height = 41
+    Align = alBottom
+    TabOrder = 0
+    object BitBtn1: TBitBtn
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = 'Ekle'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtn1Click
+      ExplicitTop = 5
+    end
+    object BitBtn2: TBitBtn
+      AlignWithMargins = True
+      Left = 696
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alRight
+      Caption = 'Kapat'
+      DoubleBuffered = True
+      Kind = bkCancel
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtn2Click
+    end
+    object Button1: TButton
+      AlignWithMargins = True
+      Left = 85
+      Top = 4
+      Width = 75
+      Height = 33
+      Align = alLeft
+      Caption = 'G'#246'ster'
+      TabOrder = 2
+      OnClick = Button1Click
+      ExplicitTop = 5
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 775
+    Height = 57
+    Align = alTop
+    TabOrder = 1
+    object BtnTarihAra: TButton
+      Left = 262
+      Top = 17
+      Width = 75
+      Height = 25
+      Caption = 'Ara'
+      TabOrder = 0
+      OnClick = BtnTarihAraClick
+    end
+    object DTP3: TDateTimePicker
+      Left = 143
+      Top = 21
+      Width = 97
+      Height = 21
+      Date = 44306.416198645830000000
+      Time = 44306.416198645830000000
+      TabOrder = 1
+    end
+    object DTP2: TDateTimePicker
+      Left = 16
+      Top = 21
+      Width = 97
+      Height = 21
+      Date = 44306.416198645830000000
+      Time = 44306.416198645830000000
+      TabOrder = 2
+    end
+    object btnTumu: TButton
+      Left = 359
+      Top = 17
+      Width = 75
+      Height = 25
+      Caption = 'T'#252'm'#252
+      TabOrder = 3
+      OnClick = BtnTarihAraClick
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 57
+    Width = 775
+    Height = 288
+    Align = alClient
+    TabOrder = 2
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 1
+      Width = 773
+      Height = 286
+      Align = alClient
+      DataSource = DataSource1
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'sip_id'
+          Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'sip_no'
+          Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'mus_id'
+          Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'mus_adi'
+          Width = 150
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'sip_tarih'
+          Width = 150
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'toplam_tutar'
+          Width = 150
+          Visible = True
+        end>
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = ADOQueryTarih
+    Left = 712
+    Top = 136
+  end
+  object ADOQueryTarih: TADOQuery
+    Connection = FrmGiris.ADOConnection1
+    CursorType = ctStatic
+    Parameters = <
+      item
+        Name = 't1'
+        Attributes = [paNullable]
+        DataType = ftDateTime
+        NumericScale = 3
+        Precision = 23
+        Size = 16
+        Value = Null
+      end
+      item
+        Name = 't2'
+        Attributes = [paNullable]
+        DataType = ftDateTime
+        NumericScale = 3
+        Precision = 23
+        Size = 16
+        Value = Null
+      end>
+    SQL.Strings = (
+      'Select * from siparis_master'
+      'WHERE sip_tarih between :t1 and :t2')
+    Left = 648
+    Top = 136
+    object ADOQueryTarihsip_id: TAutoIncField
+      FieldName = 'sip_id'
+      ReadOnly = True
+    end
+    object ADOQueryTarihsip_no: TIntegerField
+      FieldName = 'sip_no'
+    end
+    object ADOQueryTarihmus_id: TIntegerField
+      FieldName = 'mus_id'
+    end
+    object ADOQueryTarihmus_adi: TWideStringField
+      FieldName = 'mus_adi'
+      Size = 50
+    end
+    object ADOQueryTarihsip_tarih: TDateTimeField
+      FieldName = 'sip_tarih'
+    end
+    object ADOQueryTarihtoplam_tutar: TBCDField
+      FieldName = 'toplam_tutar'
+      Precision = 18
+      Size = 2
+    end
+  end
+end
